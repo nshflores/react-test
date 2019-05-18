@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ChartLine from 'react-google-charts';
+import PageLoading from './PageLoading';
 import Button from '@material-ui/core/Button';
 import Card from "@material-ui/core/Card";
 import CardHeaderRaw from "@material-ui/core/CardHeader";
@@ -26,26 +27,12 @@ const styles = {
 
 class Chart extends Component {
 
-  onStartFetch = () => {
-    this.intervalId = setInterval(() => {
-      this.props.dispatch({ type: 'EVENT/DRONE_START_FETCH' });
-      console.log('state', this.props);
-    }, 4000);
-    console.log(`New intervalId ${this.intervalId}`)
-  }
-
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch({ type: 'EVENT/DRONE_START_FETCH' });
-  }
-  
-
-  componentDidMount() {
-    this.onStartFetch();
   }
 
   componentWillUnmount() {
-    console.log(this.intervalId, 'the component will unmount');
-    clearInterval(this.intervalId);
+    this.props.dispatch({ type: 'EVENT/DRONE_CANCEL_FETCH' })
   }
 
   render() {
@@ -55,6 +42,10 @@ class Chart extends Component {
     });
 
     const ButtonLink = props => <Link to='/' {...props}></Link>
+
+    if (drone.loading) {
+      return <PageLoading />
+    }
 
     return (
       <Card className={classes.card}>

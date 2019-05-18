@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import GoogleMapReact from "google-map-react";
+import PageLoading from './PageLoading';
 import Card from "@material-ui/core/Card";
 import Button from '@material-ui/core/Button';
 import CardHeaderRaw from "@material-ui/core/CardHeader";
@@ -29,24 +30,24 @@ const styles = {
 
 class Map extends Component {
 
-  componentDidMount() {
-    this.intervalId = setInterval(() => {
-      this.props.dispatch({ type: 'EVENT/DRONE_START_FETCH' });
-      console.log('state', this.props);
-    }, 4000);
-    console.log(`New intervalId ${this.intervalId}`)
+  componentWillMount() {
+    this.props.dispatch({ type: 'EVENT/DRONE_START_FETCH' });
   }
 
   componentWillUnmount() {
-    console.log(this.intervalId, 'the component will unmount');
-    clearInterval(this.intervalId);
+    this.props.dispatch({ type: 'EVENT/DRONE_CANCEL_FETCH' })
   }
 
   render() {
-    const { classes } = this.props;
-    const { drone } = this.props;
+    const { classes, drone } = this.props;
 
     const ButtonLink = props => <Link to='/chart' {...props}></Link>
+
+    if (drone.loading) {
+      return <PageLoading />
+    }
+
+    const { latitude, longitude } = drone.data[drone.data.length - 1] || 0
 
     return (
       <Card className={classes.card}>
@@ -58,19 +59,20 @@ class Map extends Component {
                 key: config.googleMaps.apiKey
               }}
               center={{
-                lat: drone.latitude,
-                lng: drone.longitude
+                lat:latitude,
+                lng: longitude
               }}
               defaultZoom={drone.zoom}
             >
               <AnyReactComponent
-                lat={drone.latitude}
-                lng={drone.longitude}
+                lat={latitude}
+                lng={longitude}
                 text={`*`}
               />
             </GoogleMapReact>
           </div>
-
+          
+          <br/>
           <Button variant="contained" size="large" color="primary" component={ButtonLink}>
               Go to chart
           </Button> 
