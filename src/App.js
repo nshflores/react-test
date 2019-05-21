@@ -8,7 +8,8 @@ import Layout from './components/Layout';
 import Home from './components/Home';
 import Map from './components/Map';
 import Chart from './components/Chart'
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import NotFound from "./components/NotFound";
 
 const store = createStore();
 const theme = createMuiTheme({
@@ -34,9 +35,12 @@ const App = props => (
       <CssBaseline />
       <Provider store={store}>
         <Layout>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/maps' component={Map} />
-          <Route exact path='/chart' component={Chart} />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/maps' component={Map} />
+            <Route exact path='/chart' component={Chart} />
+            <Route component={NotFound} />
+          </Switch>
         </Layout>
       </Provider>
     </MuiThemeProvider>

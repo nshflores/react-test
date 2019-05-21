@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
 
+import './styles/Layout.css';
+
 import Header from './Header';
 import Wrapper from './Wrapper';
 
-function Layout (props) {
+const Layout = props => {
   return (
     <Fragment>
       <Wrapper>
