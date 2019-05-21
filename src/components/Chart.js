@@ -29,7 +29,7 @@ const styles = {
 
 class Chart extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch({ type: actions.DRONE_START_FETCH });
   }
 

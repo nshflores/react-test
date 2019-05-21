@@ -31,7 +31,7 @@ const styles = {
 
 class Map extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch({ type: actions.DRONE_START_FETCH });
   }
 

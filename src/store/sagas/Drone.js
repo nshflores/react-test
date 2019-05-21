@@ -1,4 +1,4 @@
-import { takeEvery, call, fork, put, cancel, all } from "redux-saga/effects";
+import { takeEvery, call, fork, put, cancel, all, take } from "redux-saga/effects";
 import { delay } from 'redux-saga';
 import API from "../api";
 import * as actions from "../actions";
@@ -32,18 +32,17 @@ function* droneFetchData() {
   }
 }
 
-function* droneCancelFetch () {
+function* droneStartPolling () {
   const bgDroneFetchData = yield fork(droneFetchData)
+  yield take(actions.DRONE_CANCEL_FETCH)
   yield cancel(bgDroneFetchData)
-  return;
 }
 
 
 
 function* watchDroneFetch() {
   yield all([
-    takeEvery(actions.DRONE_START_FETCH, droneFetchData),
-    takeEvery(actions.DRONE_CANCEL_FETCH, droneCancelFetch)
+    takeEvery(actions.DRONE_START_FETCH, droneStartPolling)
   ]);
 }
 
