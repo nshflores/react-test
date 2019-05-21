@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ChartLine from 'react-google-charts';
 import PageLoading from './PageLoading';
+import Loader from './Loader';
 import Button from '@material-ui/core/Button';
 import Card from "@material-ui/core/Card";
 import CardHeaderRaw from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core/styles";
+import * as actions from "../store/actions";
 
 const cardStyles = theme => ({
   root: {
@@ -21,29 +23,27 @@ const CardHeader = withStyles(cardStyles)(CardHeaderRaw);
 
 const styles = {
   card: {
-    margin: "5% 25%"
+    margin: "1em 10%"
   }
 };
 
 class Chart extends Component {
 
   componentWillMount() {
-    this.props.dispatch({ type: 'EVENT/DRONE_START_FETCH' });
+    this.props.dispatch({ type: actions.DRONE_START_FETCH });
   }
 
   componentWillUnmount() {
-    this.props.dispatch({ type: 'EVENT/DRONE_CANCEL_FETCH' })
+    this.props.dispatch({ type: actions.DRONE_CANCEL_FETCH })
   }
 
   render() {
     const { classes, drone } = this.props;
-    const droneDataToChart = drone.data.map(e => {
-      return [new Date(e.timestamp), e.metric]
-    });
+    const { isLoading, droneDataToChart } = drone; 
 
     const ButtonLink = props => <Link to='/' {...props}></Link>
 
-    if (drone.loading) {
+    if (isLoading) {
       return <PageLoading />
     }
 
@@ -55,7 +55,7 @@ class Chart extends Component {
             width={'100%'}
             height={'70vh'}
             chartType="LineChart"
-            loader={<div>Loading chart</div>}
+            loader={<Loader />}
             data={[
               [
                 { type: 'date', label: 'Timestamp' },
@@ -78,9 +78,9 @@ class Chart extends Component {
           >
 
           </ChartLine>
-
+          <br />
           <Button variant="contained" size="large" color="primary" component={ButtonLink}>
-              Go to Map
+              Go back
           </Button> 
         </CardContent>
       </Card>
@@ -88,10 +88,16 @@ class Chart extends Component {
   }
 }
 
-function mapStateToProps (state, props) {
+function mapStateToProps (state) {
+  const { drone } = state;
+  const droneDataToChart = drone.data.map(e => {
+    return [new Date(e.timestamp), e.metric]
+  });
   return {
-    ...props,
-    ...state
+    ...state,
+    drone: {
+      droneDataToChart
+    }
   }
 }
 

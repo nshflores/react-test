@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,18 +9,24 @@ import Weather from "./Weather";
 const styles = {
   grow: {
     flexGrow: 1
+  },
+  linkButton: {
+    textDecoration: "none",
+    color: "white"
   }
 };
 
 const Header = props => {
   const { classes } = props;
 
-  const name = "test-react's";
+  const name = "Drone's Statistic";
   return (
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" color="inherit" className={classes.grow}>
-          {name} EOG React Visualization Assessment
+          <Link className={classes.linkButton} to="/">
+            {name} EOG
+          </Link>
         </Typography>
         <Weather />
       </Toolbar>

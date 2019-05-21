@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import CardHeaderRaw from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core/styles";
+import * as actions from "../store/actions";
 const config = require('../config');
 
 const AnyReactComponent = ({ text }) => <div style={{ fontWeight: 'bold', color: 'red', fontSize: '2em' }}>{text}</div>;
@@ -24,34 +25,32 @@ const CardHeader = withStyles(cardStyles)(CardHeaderRaw);
 
 const styles = {
   card: {
-    margin: "5% 25%"
+    margin: "1em 10%"
   }
 };
 
 class Map extends Component {
 
   componentWillMount() {
-    this.props.dispatch({ type: 'EVENT/DRONE_START_FETCH' });
+    this.props.dispatch({ type: actions.DRONE_START_FETCH });
   }
 
   componentWillUnmount() {
-    this.props.dispatch({ type: 'EVENT/DRONE_CANCEL_FETCH' })
+    this.props.dispatch({ type: actions.DRONE_CANCEL_FETCH })
   }
 
   render() {
-    const { classes, drone } = this.props;
+    const { classes, drone: { zoom, isLoading, latitude, longitude } } = this.props;
 
-    const ButtonLink = props => <Link to='/chart' {...props}></Link>
+    const ButtonLink = props => <Link to='/' {...props}></Link>
 
-    if (drone.loading) {
+    if (isLoading) {
       return <PageLoading />
     }
 
-    const { latitude, longitude } = drone.data[drone.data.length - 1] || 0
-
     return (
       <Card className={classes.card}>
-        <CardHeader title="GoogleMaps Position" />
+        <CardHeader title="Drone's position" />
         <CardContent>
           <div style={{ height: "70vh", width: "100%" }}>
             <GoogleMapReact
@@ -59,10 +58,10 @@ class Map extends Component {
                 key: config.googleMaps.apiKey
               }}
               center={{
-                lat:latitude,
+                lat: latitude,
                 lng: longitude
               }}
-              defaultZoom={drone.zoom}
+              defaultZoom={zoom}
             >
               <AnyReactComponent
                 lat={latitude}
@@ -74,7 +73,7 @@ class Map extends Component {
           
           <br/>
           <Button variant="contained" size="large" color="primary" component={ButtonLink}>
-              Go to chart
+              Go back
           </Button> 
         </CardContent>
       </Card>
@@ -82,10 +81,17 @@ class Map extends Component {
   }
 }
 
-function mapStateToProps (state, props) {
+function mapStateToProps (state) {
+  const { drone: { zoom, isLoading, data } } = state;
+  
   return {
     ...state,
-    ...props
+    drone: {
+      zoom: zoom || 7,
+      isLoading: isLoading || false,
+      latitude: data && data.length ? data[data.length - 1].latitude : 0,
+      longitude: data && data.length ? data[data.length - 1].longitude : 0
+    }
   }
 }
 

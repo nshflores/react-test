@@ -19,23 +19,23 @@ import * as actions from "../actions";
 */
 
 function* droneFetchData() {
-  try {
-    while(true) {
-      const { data } = yield call(API.droneData);
-      yield put({ type: actions.DRONE_INFO, data });
-      yield delay(4000);
+  while(true) {
+    const { data, error } = yield call(API.droneData);
+    yield put({ type: actions.DRONE_INFO, data });
+    yield delay(4000);
+
+    if (error) {
+      yield put({ type: actions.API_ERROR, code: error.code });
+      yield cancel();
+      return;
     }
-  } catch (err) {
-    yield put({ type: actions.API_ERROR, code: err.code });
-    yield cancel();
-    return;
   }
 }
 
 function* droneCancelFetch () {
-  console.log(`Calling droneCancelFetch`);
   const bgDroneFetchData = yield fork(droneFetchData)
   yield cancel(bgDroneFetchData)
+  return;
 }
 
 

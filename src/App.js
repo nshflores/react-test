@@ -5,6 +5,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from './components/Layout';
+import Home from './components/Home';
 import Map from './components/Map';
 import Chart from './components/Chart'
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -33,7 +34,8 @@ const App = props => (
       <CssBaseline />
       <Provider store={store}>
         <Layout>
-          <Route exact path='/' component={Map} />
+          <Route exact path='/' component={Home} />
+          <Route exact path='/maps' component={Map} />
           <Route exact path='/chart' component={Chart} />
         </Layout>
       </Provider>
