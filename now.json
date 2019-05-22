@@ -28,5 +28,9 @@
       "headers": { "cache-control": "s-maxage=0" },
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "@app_env",
+    "REACT_APP_GM_API_KEY": "@mapkey"
+  }
 }

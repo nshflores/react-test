@@ -1,0 +1,17 @@
+.Card {
+  margin: 1em 10%;
+  border-radius: 0;
+}
+
+.CardHeader {
+  background: rgb(39,49,66);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .Card {
+    margin: 0em;
+    border-radius: 0 !important;
+    text-align: center;
+  }
+}

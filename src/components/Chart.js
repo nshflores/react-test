@@ -10,6 +10,7 @@ import CardHeaderRaw from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core/styles";
 import * as actions from "../store/actions";
+import './styles/Chart.css'
 
 const cardStyles = theme => ({
   root: {
@@ -38,7 +39,7 @@ class Chart extends Component {
   }
 
   render() {
-    const { classes, drone } = this.props;
+    const { drone } = this.props;
     const { isLoading, droneDataToChart } = drone; 
 
     const ButtonLink = props => <Link to='/' {...props}></Link>
@@ -48,7 +49,7 @@ class Chart extends Component {
     }
 
     return (
-      <Card className={classes.card}>
+      <Card className="Card">
         <CardHeader title="GoogleMaps Position" />
         <CardContent>
           <ChartLine

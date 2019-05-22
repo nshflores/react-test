@@ -5,6 +5,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { withStyles } from "@material-ui/core/styles";
 import Weather from "./Weather";
+import AppIcon from './AppIcon';
 
 const styles = {
   grow: {
@@ -18,14 +19,19 @@ const styles = {
 
 const Header = props => {
   const { classes } = props;
+  const AppIconStyles = {
+    color: 'gray',
+    size: '1.2em',
+    style: {},
+  }
 
-  const name = "Drone's Statistic";
+  const name = "EOG";
   return (
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" color="inherit" className={classes.grow}>
           <Link className={classes.linkButton} to="/">
-            {name} EOG
+            <AppIcon {...AppIconStyles} /> <strong>{name}</strong>
           </Link>
         </Typography>
         <Weather />

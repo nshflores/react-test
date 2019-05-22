@@ -9,16 +9,18 @@ import CardHeaderRaw from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core/styles";
 import * as actions from "../store/actions";
-const config = require('../config');
+import './styles/Map.css'
+import config from '../config';
 
 const AnyReactComponent = ({ text }) => <div style={{ fontWeight: 'bold', color: 'red', fontSize: '2em' }}>{text}</div>;
 
 const cardStyles = theme => ({
   root: {
-    background: theme.palette.primary.main
+    background: theme.palette.primary.main,
   },
   title: {
-    color: "white"
+    color: "white",
+    borderRadius: 0
   }
 });
 const CardHeader = withStyles(cardStyles)(CardHeaderRaw);
@@ -40,7 +42,8 @@ class Map extends Component {
   }
 
   render() {
-    const { classes, drone: { zoom, isLoading, latitude, longitude } } = this.props;
+    console.log(config)
+    const { drone: { zoom, isLoading, latitude, longitude } } = this.props;
 
     const ButtonLink = props => <Link to='/' {...props}></Link>
 
@@ -49,8 +52,8 @@ class Map extends Component {
     }
 
     return (
-      <Card className={classes.card}>
-        <CardHeader title="Drone's position" />
+      <Card className="Card">
+        <CardHeader title="Drone's position"/>
         <CardContent>
           <div style={{ height: "70vh", width: "100%" }}>
             <GoogleMapReact
