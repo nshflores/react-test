@@ -29,7 +29,7 @@ class Weather extends Component {
     if (loading) return <LinearProgress />;
     return (
       <Chip
-        label={`Weather in ${name}: ${weather_state_name} and ${Number.parseFloat(temperatureinFahrenheit).toFixed(2)}°`}
+        label={`Weather - ${name}: ${weather_state_name} / ${Number.parseFloat(temperatureinFahrenheit).toFixed(2)}°`}
       />
     );
   }
